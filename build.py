@@ -136,7 +136,8 @@ if __name__ == "__main__":
         try:
             clone_repository(github_url, subfolder_name)
         except: pass
-        tag = download_assets("obsproject", "obs-deps", filenames=["windows-deps-{tag}-x64.zip",
+        tag = download_assets("obsproject", "obs-deps", release_tag="2023-04-12",
+                              filenames=["windows-deps-{tag}-x64.zip",
                                                         "windows-deps-qt6-{tag}-x64-Debug.zip"])
         
         depspath = os.path.abspath( f"temp/windows-deps-{tag}-x64")
