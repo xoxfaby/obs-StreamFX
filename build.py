@@ -122,7 +122,7 @@ def download_assets(github_user, github_repo, release_tag=None, filename=None, f
 
 
 if __name__ == "__main__":
-    github_url = 'https://github.com/Xaymar/obs-StreamFX.git'
+    github_url = 'https://github.com/xoxfaby/obs-StreamFX.git'
     subfolder_name = 'obs-streamfx'
 
     try:
