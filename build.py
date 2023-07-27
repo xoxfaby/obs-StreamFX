@@ -1,3 +1,5 @@
+# Copyright (C) 2023 XoXFaby
+
 import requests
 import os
 import subprocess
