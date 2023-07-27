@@ -1,7 +1,7 @@
 ![FreeFX Logo](https://raw.githubusercontent.com/xoxfaby/obs-StreamFX/master/media/logo.png)
 # FreeFX
 
-FreeFX is a fork of StreamFX that changes nothing but just provides binaries so you can use it without having to learn how to build it. I've always included a [build.py](https://github.com/xoxfaby/obs-StreamFX/blob/root/build.py) Python script that builds should completely automate building the plugin, but you have to make sure you have the right stuff installed in your Visual Studio. Please don't ask for help with this, just use the releases I provded.
+FreeFX is a fork of StreamFX that changes nothing but just provides binaries so you can use it without having to learn how to build it. I've also included a [build.py](https://github.com/xoxfaby/obs-StreamFX/blob/root/build.py) Python script that should completely automate building the plugin, but you have to make sure you have the right stuff installed in your Visual Studio. Please don't ask for help with this, just use the releases I provded.
 
 If you wanna support FreeFX then support StreamFX, the guy who actually made it, I just copied it. Original Readme below
 
