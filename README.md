@@ -1,5 +1,10 @@
-![StreamFX Logo](https://raw.githubusercontent.com/Xaymar/obs-StreamFX/master/media/logo.png)
+![FreeFX Logo](https://raw.githubusercontent.com/xoxfaby/obs-StreamFX/master/media/logo.png)
+# FreeFX
+
+FreeFX is a fork of StreamFX that changes nothing but just provides binaries so you can use it without having to learn how to build it. If you wanna support FreeFX then support StreamFX, the guy who actually made it. Original Readme below
+
 # StreamFX
+
 Bring your setup to the modern day with StreamFX! With several super fast filters, new ways to build your scenes, and new encoders you can now take your stream even further. Create cool new scenes with 3D effects, make something glow or have a shadow, or blur out content - the choice is yours!
 
 [![CI](https://github.com/Xaymar/obs-StreamFX/actions/workflows/main.yml/badge.svg)](https://github.com/Xaymar/obs-StreamFX/actions) [![Crowdin](https://badges.crowdin.net/obs-stream-effects/localized.svg)](https://crowdin.com/project/obs-stream-effects)
