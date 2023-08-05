@@ -5,6 +5,8 @@ FreeFX is a fork of StreamFX that changes nothing but just provides binaries so 
 
 If you wanna support FreeFX then support StreamFX, the guy who actually made it, I just copied it. Original Readme below
 
+The FreeFX logo uses the thumbsup emoji from [twemoji](https://twemoji.twitter.com/)
+
 # StreamFX
 
 Bring your setup to the modern day with StreamFX! With several super fast filters, new ways to build your scenes, and new encoders you can now take your stream even further. Create cool new scenes with 3D effects, make something glow or have a shadow, or blur out content - the choice is yours!
