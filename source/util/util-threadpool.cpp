@@ -253,11 +253,12 @@ std::shared_ptr<streamfx::util::threadpool::threadpool> streamfx::util::threadpo
 
 static std::shared_ptr<streamfx::util::threadpool::threadpool> loader_instance;
 
-static auto loader = streamfx::loader(
-	[]() { // Initalizer
+static auto loader = streamfx::component(
+	"core::threadpool",
+	[]() { // Initializer
 		loader_instance = streamfx::util::threadpool::threadpool::instance();
 	},
 	[]() { // Finalizer
 		loader_instance.reset();
 	},
-	streamfx::loader_priority::HIGHEST);
+	{});

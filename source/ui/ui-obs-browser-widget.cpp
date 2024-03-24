@@ -36,7 +36,7 @@ streamfx::ui::obs_browser_cef::obs_browser_cef()
 	_cef->wait_for_browser_init();
 
 	// Create a generic Cookie manager for widgets.
-	_cookie = _cef->create_cookie_manager(streamfx::config_file_path("cookies").u8string(), false);
+	_cookie = _cef->create_cookie_manager(streamfx::config_file_path("cookies").string(), false);
 }
 
 streamfx::ui::obs_browser_cef::~obs_browser_cef()

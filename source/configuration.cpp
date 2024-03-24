@@ -43,7 +43,7 @@ streamfx::configuration::configuration() : _config_path(), _data(), _task_lock()
 		if (!std::filesystem::exists(_config_path) || !std::filesystem::is_regular_file(_config_path)) {
 			throw std::runtime_error("Configuration does not exist.");
 		} else {
-			obs_data_t* data = obs_data_create_from_json_file_safe(_config_path.u8string().c_str(), path_backup_ext.data());
+			obs_data_t* data = obs_data_create_from_json_file_safe(reinterpret_cast<const char*>(_config_path.string().c_str()), path_backup_ext.data());
 			if (!data) {
 				throw std::runtime_error("Failed to load configuration from disk.");
 			} else {
@@ -59,7 +59,7 @@ void streamfx::configuration::save()
 {
 	std::lock_guard<std::mutex> lg(_task_lock);
 	if (!_save_task || _save_task->is_completed()) {
-		_save_task = streamfx::threadpool()->push([this](streamfx::util::threadpool::task_data_t) {
+		_save_task = streamfx::util::threadpool::threadpool::instance()->push([this](streamfx::util::threadpool::task_data_t) {
 			// ToDo: Implement delayed tasks in ::threadpool.
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
@@ -69,7 +69,7 @@ void streamfx::configuration::save()
 			if (_config_path.has_parent_path()) {
 				std::filesystem::create_directories(_config_path.parent_path());
 			}
-			if (!obs_data_save_json_safe(_data.get(), _config_path.u8string().c_str(), ".tmp", path_backup_ext.data())) {
+			if (!obs_data_save_json_safe(_data.get(), reinterpret_cast<const char*>(_config_path.string().c_str()), ".tmp", path_backup_ext.data())) {
 				D_LOG_ERROR("Failed to save configuration file.", nullptr);
 			}
 		});
@@ -108,11 +108,12 @@ std::shared_ptr<streamfx::configuration> streamfx::configuration::instance()
 
 static std::shared_ptr<streamfx::configuration> loader_instance;
 
-static auto loader = streamfx::loader(
-	[]() { // Initalizer
+static auto loader = streamfx::component(
+	"core::configuration",
+	[]() { // Initializer
 		loader_instance = streamfx::configuration::instance();
 	},
 	[]() { // Finalizer
 		loader_instance.reset();
 	},
-	streamfx::loader_priority::HIGHER); // Attempt to load after critical functionality.
+	{"core::threadpool"});

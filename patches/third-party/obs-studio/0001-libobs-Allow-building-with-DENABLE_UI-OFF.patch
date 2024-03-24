@@ -1,0 +1,28 @@
+From 475f1b374ab196117f09d239dca9076a33857fd3 Mon Sep 17 00:00:00 2001
+From: Michael Fabian 'Xaymar' Dirks <info@xaymar.com>
+Date: Mon, 8 Jan 2024 09:22:16 +0100
+Subject: [PATCH] libobs: Allow building with -DENABLE_UI=OFF
+
+An oversight only creates the OBS::w32-pthreads target when -DENABLE_UI=ON.
+---
+ libobs/cmake/os-windows.cmake | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/libobs/cmake/os-windows.cmake b/libobs/cmake/os-windows.cmake
+index 04500d1b0..5c80325e6 100644
+--- a/libobs/cmake/os-windows.cmake
++++ b/libobs/cmake/os-windows.cmake
+@@ -43,6 +43,10 @@ target_compile_options(libobs PRIVATE $<$<COMPILE_LANGUAGE:C,CXX>:/EHc->)
+ set_source_files_properties(obs-win-crash-handler.c PROPERTIES COMPILE_DEFINITIONS
+                                                                OBS_VERSION="${OBS_VERSION_CANONICAL}")
+ 
++if(NOT TARGET OBS::w32-pthreads)
++add_subdirectory("${CMAKE_SOURCE_DIR}/deps/w32-pthreads" "${CMAKE_BINARY_DIR}/deps/w32-pthreads")
++endif()
++
+ target_link_libraries(
+   libobs
+   PRIVATE Avrt
+-- 
+2.42.0.windows.1
+

@@ -252,11 +252,12 @@ std::shared_ptr<streamfx::obs::source_tracker> streamfx::obs::source_tracker::in
 
 static std::shared_ptr<streamfx::obs::source_tracker> loader_instance;
 
-static auto loader = streamfx::loader(
-	[]() { // Initalizer
+static auto loader = streamfx::component(
+	"core::source_tracker",
+	[]() { // Initializer
 		loader_instance = streamfx::obs::source_tracker::instance();
 	},
 	[]() { // Finalizer
 		loader_instance.reset();
 	},
-	streamfx::loader_priority::HIGHEST); // Does not rely on other critical functionality.
+	{"core::threadpool"});

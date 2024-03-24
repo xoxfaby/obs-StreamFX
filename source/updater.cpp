@@ -485,7 +485,7 @@ void streamfx::updater::refresh()
 		save();
 
 		// Spawn a new task.
-		_task = streamfx::threadpool()->push(std::bind(&streamfx::updater::task, this, std::placeholders::_1), nullptr);
+		_task = streamfx::util::threadpool::threadpool::instance()->push(std::bind(&streamfx::updater::task, this, std::placeholders::_1), nullptr);
 	} else {
 		events.refreshed(*this);
 	}

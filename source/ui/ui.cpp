@@ -72,11 +72,7 @@ streamfx::ui::handler::handler()
 
 	  _about_action(), _about_dialog(),
 
-	  _translator()
-#ifdef ENABLE_UPDATER
-	  ,
-	  _updater()
-#endif
+	  _translator(), _updater()
 {
 	obs_frontend_add_event_callback(frontend_event_handler, this);
 }
@@ -168,9 +164,7 @@ void streamfx::ui::handler::on_obs_loaded()
 		}
 
 		// Create the updater.
-#ifdef ENABLE_UPDATER
 		_updater = streamfx::ui::updater::instance(_menu);
-#endif
 
 		_menu->addSeparator();
 
@@ -204,10 +198,7 @@ void streamfx::ui::handler::on_obs_loaded()
 	}
 
 	// Let the Updater start its work.
-
-#ifdef ENABLE_UPDATER
 	this->_updater->obs_ready();
-#endif
 }
 
 void streamfx::ui::handler::on_obs_exit()
@@ -260,7 +251,7 @@ void streamfx::ui::handler::on_action_about(bool checked)
 std::shared_ptr<streamfx::ui::handler> streamfx::ui::handler::instance()
 {
 	static std::weak_ptr<streamfx::ui::handler> winst;
-	static std::mutex                                   mtx;
+	static std::mutex                           mtx;
 
 	std::unique_lock<decltype(mtx)> lock(mtx);
 	auto                            instance = winst.lock();
@@ -294,11 +285,12 @@ QString streamfx::ui::translator::translate(const char* context, const char* sou
 
 static std::shared_ptr<streamfx::ui::handler> loader_instance;
 
-static auto loader = streamfx::loader(
-	[]() { // Initalizer
+static auto loader = streamfx::component(
+	"ui",
+	[]() { // Initializer
 		loader_instance = streamfx::ui::handler::instance();
 	},
 	[]() { // Finalizer
 		loader_instance.reset();
 	},
-	streamfx::loader_priority::LOWEST); // Must be loaded after all other functionality.
+	{"core::threadpool", "core::configuration"});

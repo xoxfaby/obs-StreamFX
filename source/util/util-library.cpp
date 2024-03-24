@@ -25,7 +25,7 @@ streamfx::util::library::library(std::filesystem::path file) : _library(nullptr)
 {
 #if defined(ST_WINDOWS)
 	SetLastError(ERROR_SUCCESS);
-	auto wfile = ::streamfx::util::platform::utf8_to_native(file.u8string());
+	auto wfile = file.wstring();
 	if (file.is_absolute()) {
 		_library = reinterpret_cast<void*>(LoadLibraryExW(wfile.c_str(), nullptr, LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR));
 	} else {
@@ -46,7 +46,7 @@ streamfx::util::library::library(std::filesystem::path file) : _library(nullptr)
 		throw std::runtime_error(ex);
 	}
 #elif defined(ST_UNIX)
-	_library = dlopen(file.u8string().c_str(), RTLD_LAZY);
+	_library = dlopen(file.generic_string().c_str(), RTLD_LAZY);
 	if (!_library) {
 		if (char* error = dlerror(); error)
 			throw std::runtime_error(error);
@@ -78,7 +78,7 @@ void* streamfx::util::library::load_symbol(std::string_view name)
 #endif
 }
 
-static std::unordered_map<std::string, std::weak_ptr<::streamfx::util::library>> libraries;
+static std::unordered_map<std::u8string, std::weak_ptr<::streamfx::util::library>> libraries;
 
 std::shared_ptr<::streamfx::util::library> streamfx::util::library::load(std::filesystem::path file)
 {
@@ -97,13 +97,17 @@ std::shared_ptr<::streamfx::util::library> streamfx::util::library::load(std::fi
 
 std::shared_ptr<::streamfx::util::library> streamfx::util::library::load(std::string_view name)
 {
-	return load(std::filesystem::u8path(name));
+	return load(std::filesystem::path(name));
 }
 
 std::shared_ptr<::streamfx::util::library> streamfx::util::library::load(obs_module_t* instance)
 {
+	if (!instance) {
+		throw std::runtime_error("Can't load nullptr as a library.");
+	}
+
 	// Get an absolute path to the module.
-	auto path = std::filesystem::absolute(std::filesystem::u8path(obs_get_module_binary_path(instance)));
+	auto path = std::filesystem::absolute(std::filesystem::path(std::u8string(reinterpret_cast<char8_t const*>(obs_get_module_binary_path(instance)))));
 
 	// Find by absolute path.
 	auto kv = libraries.find(path.u8string());
